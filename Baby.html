@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 4th Monthsary, My Love</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff4d6d;
+            --accent-color: #ff758f;
+            --envelope-color: #ffccd5;
+            --envelope-flap: #ffb3c1;
+            --text-color: #4a4a4a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffb3c1 0%, #ff8fa3 50%, #ff758f 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Floating Animated Hearts Background */
+        .hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .heart-particle {
+            position: absolute;
+            bottom: -100px;
+            background-color: rgba(255, 255, 255, 0.6);
+            display: inline-block;
+            height: 30px;
+            width: 30px;
+            transform: rotate(-45deg);
+            animation: floatUp 10s linear infinite;
+            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
+        }
+
+        .heart-particle::before,
+        .heart-particle::after {
+            content: "";
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            height: 30px;
+            width: 30px;
+            position: absolute;
+        }
+
+        .heart-particle::before { top: -15px; left: 0; }
+        .heart-particle::after { left: 15px; top: 0; }
+
+        .heart-particle:nth-child(1) { left: 10%; animation-duration: 8s; animation-delay: 0s; transform: scale(0.6) rotate(-45deg); }
+        .heart-particle:nth-child(2) { left: 25%; animation-duration: 12s; animation-delay: 2s; transform: scale(1.2) rotate(-45deg); }
+        .heart-particle:nth-child(3) { left: 40%; animation-duration: 9s; animation-delay: 4s; transform: scale(0.8) rotate(-45deg); }
+        .heart-particle:nth-child(4) { left: 60%; animation-duration: 11s; animation-delay: 1s; transform: scale(1) rotate(-45deg); }
+        .heart-particle:nth-child(5) { left: 75%; animation-duration: 7s; animation-delay: 3s; transform: scale(0.5) rotate(-45deg); }
+        .heart-particle:nth-child(6) { left: 90%; animation-duration: 10s; animation-delay: 5s; transform: scale(0.9) rotate(-45deg); }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(-45deg) scale(0.8); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-120vh) rotate(-45deg) scale(1.2); opacity: 0; }
+        }
+
+        /* Container for Envelope & Card */
+        .wrapper {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 650px;
+        }
+
+        /* Interactive Envelope */
+        .envelope-container {
+            width: 100%;
+            max-width: 450px;
+            height: 280px;
+            background-color: var(--envelope-color);
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.4s ease, opacity 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .envelope-container:hover {
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            width: 0;
+            height: 0;
+            border-left: 225px solid transparent;
+            border-right: 225px solid transparent;
+            border-top: 150px solid var(--envelope-flap);
+            transform-origin: top;
+            transition: transform 0.6s ease;
+        }
+
+        .envelope-seal {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            z-index: 3;
+            animation: pulse 1.8s infinite;
+        }
+
+        .click-hint {
+            margin-top: 20px;
+            font-size: 0.95rem;
+            color: #d63384;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Main Romantic Card */
+        .card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 25px;
+            padding: 45px 35px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(219, 68, 85, 0.25);
+            display: none;
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .card.open {
+            display: block;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .main-heart {
+            font-size: 3.5rem;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            display: inline-block;
+            animation: pulse 1.8s ease-in-out infinite;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.2rem;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #888;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .divider {
+            height: 2px;
+            width: 80px;
+            background: linear-gradient(to right, transparent, var(--primary-color), transparent);
+            margin: 0 auto 25px auto;
+        }
+
+        .letter {
+            font-size: 1.05rem;
+            line-height: 1.9;
+            color: var(--text-color);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .letter p {
+            margin-bottom: 15px;
+        }
+
+        .signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-top: 15px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff4d6d, #ff758f);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 500px) {
+            .envelope-container { height: 240px; }
+            .envelope-flap { border-left-width: 175px; border-right-width: 175px; border-top-width: 120px; }
+            .card { padding: 35px 20px; }
+            h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Moving Hearts Background -->
+    <div class="hearts-bg">
+        <div class="heart-particle"></div>
+        <div class="heart-particle"></div>
+        <div class="heart-particle"></div>
+        <div class="heart-particle"></div>
+        <div class="heart-particle"></div>
+        <div class="heart-particle"></div>
+    </div>
+
+    <div class="wrapper">
+        <!-- Interactive Envelope -->
+        <div class="envelope-container" id="envelope" onclick="openLetter()">
+            <div class="envelope-flap" id="flap"></div>
+            <div class="envelope-seal">♥</div>
+            <div class="click-hint">Click to Open Your Letter ✨</div>
+        </div>
+
+        <!-- Main Content Card -->
+        <div class="card" id="card">
+            <div class="main-heart">♥</div>
+            <h1>Happy 4th Monthsary</h1>
+            <div class="subtitle">To My Favorite Person</div>
+            
+            <div class="divider"></div>
+
+            <div class="letter">
+                <p>Four months ago, my life got so much brighter when you became a part of it. Every single day with you feels like a blessing, and I catch myself smiling just thinking about you.</p>
+                <p>Thank you for all the sweet moments, the endless laughter, and the warmth you bring into my world. You make love feel so effortless and beautiful.</p>
+                <p>I built this page just to show you a fraction of how much you mean to me. Happy 4th monthsary, my love—here's to forever more.</p>
+                <div class="signature">With all my love, always.</div>
+            </div>
+
+            <div class="badge">
+                4 Months • 120 Days • Countless Memories
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openLetter() {
+            const envelope = document.getElementById('envelope');
+            const card = document.getElementById('card');
+            
+            envelope.style.opacity = '0';
+            envelope.style.transform = 'scale(0.8)';
+            
+            setTimeout(() => {
+                envelope.style.display = 'none';
+                card.classList.add('open');
+            }, 400);
+        }
+    </script>
+
+</body>
+</html>
